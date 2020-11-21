@@ -85,7 +85,6 @@ def update():
 def draw():
     gfw.world.draw()
     # gobj.draw_collision_box()
-    font.draw(20, canvas_height - 45, 'Wave: %d' % enemy_gen.wave_index)
     
 def handle_event(e):
     global player

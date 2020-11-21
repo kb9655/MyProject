@@ -78,11 +78,11 @@ class Player:
         # if self.laser_time < Player.SPARK_INTERVAL:
         #     self.spark.draw(self.x, self.y + Player.SPARK_OFFSET)
 
-        x,y = get_canvas_width()-30, get_canvas_height()-30
+        x,y = 0+30, get_canvas_height()-30
         for i in range(MAX_LIFE):
             heart = self.heart_red if i <self.life else self.heart_white
             heart.draw(x, y)
-            x -= heart.w
+            x += heart.w
 
     def update(self):
         x,y = self.pos  
