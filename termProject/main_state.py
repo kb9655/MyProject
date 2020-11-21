@@ -8,15 +8,18 @@ import enemy_gen
 import life_gauge
 from background import HorzScrollBackground
 from background import VertScrollBackground
+import scoreboard
 
 canvas_width = 500
 canvas_height = 800
+
 
 def enter():
     gfw.world.init(['bg', 'enemy', 'bullet', 'player', 'ui'])
 
     center = get_canvas_width() // 2, get_canvas_height() // 2
 
+    #background
     speed_city = 10
     bg = VertScrollBackground('bg_city.png')
     bg.speed = speed_city
@@ -30,7 +33,9 @@ def enter():
     global player
     player = Player()
     player.bg=bg
+    
     gfw.world.add(gfw.layer.player, player)
+    
 
     global score
     score = Score(canvas_width - 20, canvas_height - 50)
@@ -41,11 +46,15 @@ def enter():
 
     life_gauge.load()
 
+    global player_life
+
+    
+
 def check_enemy(e):
-    if gobj.collides_box(player, e):
-        print('Player Collision', e)
-        e.remove()
-        return
+    #if gobj.collides_box(player, e):
+    #    print('Player Collision', e)
+    #    e.remove()
+    #    return
 
     for b in gfw.gfw.world.objects_at(gfw.layer.bullet):
         if gobj.collides_box(b, e):
@@ -57,18 +66,27 @@ def check_enemy(e):
             b.remove()
             return
 
+def check_player(e):
+    if gobj.collides_box(player, e):
+        print('Player Collision', e)
+        e.remove()
+        player.decrease_life()
+        return
+
+
 def update():
     gfw.world.update()
     enemy_gen.update()
 
     for e in gfw.world.objects_at(gfw.layer.enemy):
         check_enemy(e)
+        check_player(e)
 
 def draw():
     gfw.world.draw()
     # gobj.draw_collision_box()
     font.draw(20, canvas_height - 45, 'Wave: %d' % enemy_gen.wave_index)
-
+    
 def handle_event(e):
     global player
     # prev_dx = boy.dx
@@ -76,7 +94,10 @@ def handle_event(e):
         gfw.quit()
     elif e.type == SDL_KEYDOWN:
         if e.key == SDLK_ESCAPE:
-            gfw.pop()
+            return gfw.pop()
+        #if e.key == SDLK_SPACE:
+        #     gfw.push(scoreboard)
+    
 
     player.handle_event(e)
 

@@ -4,6 +4,9 @@ import gfw
 from gobj import *
 from bullet import *
 
+MAX_LIFE = 5
+MAX_BOMB = 3
+
 class Player:
     KEY_MAP_MOVE = {
         (SDL_KEYDOWN, SDLK_LEFT):  (-1,  0),
@@ -20,8 +23,6 @@ class Player:
         (SDL_KEYUP, SDLK_x):       -1,
         (SDL_KEYDOWN, SDLK_x):     1,
     }
-    
-    KEYDOWN_SPACE = (SDL_KEYDOWN, SDLK_SPACE)
   
     LASER_INTERVAL = 0.15
     SPARK_INTERVAL = 0.03
@@ -43,12 +44,17 @@ class Player:
 
     #constructor
     def __init__(self):
-        # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
+        #플레이어 이동
         self.pos = 250, 80
         self.delta = 0, 0
         self.speed = 320
+        #이미지 로드
         self.image = gfw.image.load(RES_DIR + '/fighters.png')
         self.spark = gfw.image.load(RES_DIR + '/laser_0.png')
+        self.heart_red = gfw.image.load('res/heart_red.png')
+        self.heart_white = gfw.image.load('res/heart_white.png')
+
+        self.life = MAX_LIFE
         self.src_rect = Player.IMAGE_RECTS[5]
         half = self.src_rect[2] // 2
         self.minx = half
@@ -56,7 +62,10 @@ class Player:
         self.laser_time = 0
         self.roll_time = 0
         self.fireidx = 0
-
+        
+    def decrease_life(self):
+        self.life -= 1
+        return self.life <= 0
 
     def fire(self):
         self.laser_time = 0
@@ -68,6 +77,12 @@ class Player:
         self.image.clip_draw(*self.src_rect, self.pos[0], self.pos[1])
         # if self.laser_time < Player.SPARK_INTERVAL:
         #     self.spark.draw(self.x, self.y + Player.SPARK_OFFSET)
+
+        x,y = get_canvas_width()-30, get_canvas_height()-30
+        for i in range(MAX_LIFE):
+            heart = self.heart_red if i <self.life else self.heart_white
+            heart.draw(x, y)
+            x -= heart.w
 
     def update(self):
         x,y = self.pos  
@@ -120,7 +135,7 @@ class Player:
         pair_attack =(e.type, e.key)
         if pair_attack in Player.KEY_MAP_ATTACK:
             self.fireidx += Player.KEY_MAP_ATTACK[pair_attack]
-            print(self.fireidx)
+            #print(self.fireidx)
         if self.fireidx > 0:
             self.fire()
         
