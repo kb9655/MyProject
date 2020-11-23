@@ -284,13 +284,15 @@
 
 ​			-폭발 이미지
 
-​			-6종의 총알 이미지
+​			-6종의 총알 이미지(적, 아군)
 
 ​		-스테이트 구조 구현(10%)
 
 ​			-title_state 추가
 
-​		-캐릭터과 npc의 공통적인 기능(50%)
+​			-구현 예정 : 점수판, 메뉴, 캐릭터 선택
+
+​		-캐릭터과 npc의 기능(50%)
 
 ​			-캐릭터 이동, 공격 구현
 
@@ -298,13 +300,23 @@
 
 ​			-플레이어 캐릭터 충돌 처리
 
+​			-구현 예정 : 폭탄, npc의 총알 발사, 플레이어 부활 시 무적
+
 ​		-보조무기, 피격범위, 공격 단계,  npc의 피격범위(0%)
+
+​			-구현 예정 : 플레이어 보조무기, 공격단계, 적npc의 크기에 따른 바운딩박스
 
 ​		-보스의  의사결정 구현, npc배치(0%)
 
+​			-구현 예정 : 보스, 보스의 단계, npc 배치
+
 ​		-점수판, 캐릭터 선택, 메뉴 구현(0%)
 
+​			-구현 예정 : 항목 선택 시 현재 선택하고 있는것이 무엇인지 표시, 일시 정지
+
 ​	2)주별 commit 수
+
+![](https://blogfiles.pstatic.net/MjAyMDExMjNfMTY3/MDAxNjA2MTM2MTE4NDc0.0fGUTwyrwFnHcLRP0dtG52-W0dqZlxWXSi-dglgVr-cg.3wOlLIvGwVv6cmw_H0hhhLk6-IWAkp-E9F3DCR8KRigg.PNG.kb9655/%EC%BA%A1%EC%B2%98.PNG)
 
 |                          | commit 수 |
 | ------------------------ | --------- |
@@ -319,13 +331,25 @@
 
 ​	3)game object 정보
 
+![](https://blogfiles.pstatic.net/MjAyMDExMjNfMjU3/MDAxNjA2MTM2MTI1NDc4.QWJrDAqgoFFyM1Avfvq16hRoI5Z_ytzz3PzX6gbVpv4g.ZIPVAo9ZL3uXhA29YOfm5zBnCaHCoArWdn62DBvksnMg.PNG.kb9655/main.PNG)
+
+
+
 ​			-main_state
 
 ​				-배경으로 시차스크롤링할 이미지 정보
 
 ​				-적의 충돌판정과 처리
 
+​					-총알과 닿으면 삭제되고 점수가 올라간다.
+
+​					-플레이어와 닿으면 삭제된다.
+
 ​				-플레이어의 충돌 판정과 처리
+
+​					-적과 닿으면 라이프가 1 감소한다.
+
+​					-적과 닿으면 player클래스의 regen을 호출한다.
 
 ​			-player	
 
@@ -333,11 +357,15 @@
 
 ​				-방향키 입력을 받아 캐릭터를 이동
 
-​				-x키 입력을 받아 총알 발사
+​					-상하좌우 방향으로 이동한다.
+
+​				-키 입력을 받아 총알 발사
+
+​					-x를 누를때마다 총알 발사
 
 ​				-플레이어의 life 정보(갯수와 이미지)와 그릴 위치 지정
 
-​				-게임 시작시의 좌표 저장, 피격시 시작좌표로 이동
+​				-pos_start에 게임 시작시의 좌표 저장, 피격시 pos_start로 이동
 
 ​			-Bullet
 
