@@ -4,7 +4,7 @@ import gfw
 from gobj import *
 from bullet import *
 
-MAX_LIFE = 5
+MAX_LIFE = 3
 MAX_BOMB = 3
 
 class Player:
@@ -45,14 +45,17 @@ class Player:
     #constructor
     def __init__(self):
         #플레이어 이동
-        self.pos = 250, 80
+        self.pos_start = 250, 80
         self.delta = 0, 0
         self.speed = 320
+        self.pos = self.pos_start
+        
         #이미지 로드
         self.image = gfw.image.load(RES_DIR + '/fighters.png')
         self.spark = gfw.image.load(RES_DIR + '/laser_0.png')
         self.heart_red = gfw.image.load('res/heart_red.png')
         self.heart_white = gfw.image.load('res/heart_white.png')
+        self.explosion = gfw.image.load('res/explosion.jpg')
 
         self.life = MAX_LIFE
         self.src_rect = Player.IMAGE_RECTS[5]
@@ -62,6 +65,9 @@ class Player:
         self.laser_time = 0
         self.roll_time = 0
         self.fireidx = 0
+
+    def regen(self):
+        self.pos = self.pos_start
         
     def decrease_life(self):
         self.life -= 1

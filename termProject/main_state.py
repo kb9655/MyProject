@@ -71,6 +71,7 @@ def check_player(e):
         print('Player Collision', e)
         e.remove()
         player.decrease_life()
+        player.regen()
         return
 
 
