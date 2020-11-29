@@ -6,6 +6,7 @@ from bullet import *
 
 MAX_LIFE = 3
 MAX_BOMB = 3
+MIN_BOMB = 0
 
 class Player:
     KEY_MAP_MOVE = {
@@ -19,10 +20,16 @@ class Player:
         (SDL_KEYUP, SDLK_UP):      ( 0, -1),
     }
 
-    KEY_MAP_ATTACK = {
-        (SDL_KEYUP, SDLK_x):       -1,
-        (SDL_KEYDOWN, SDLK_x):     1,
-    }
+    KEYDOWN_z  = (SDL_KEYDOWN, SDLK_z)
+    KEYDOWN_x = (SDL_KEYDOWN, SDLK_x)
+    KEYUP_x   = (SDL_KEYUP,   SDLK_x)
+    KEYDOWN_c  = (SDL_KEYDOWN, SDLK_c)
+
+
+    #KEY_MAP_ATTACK = {
+    #    (SDL_KEYUP, SDLK_x):       -1,
+    #    (SDL_KEYDOWN, SDLK_x):     1,
+    #}
   
     LASER_INTERVAL = 0.15
     SPARK_INTERVAL = 0.03
@@ -56,8 +63,12 @@ class Player:
         self.heart_red = gfw.image.load('res/heart_red.png')
         self.heart_white = gfw.image.load('res/heart_white.png')
         self.explosion = gfw.image.load('res/explosion.jpg')
-
+        self.image_bomb = gfw.image.load('res/bomb.png')
+        self.image_bomb_clear = gfw.image.load('res/clear.png')
+ 
         self.life = MAX_LIFE
+        self.bomb = 2
+
         self.src_rect = Player.IMAGE_RECTS[5]
         half = self.src_rect[2] // 2
         self.minx = half
@@ -73,6 +84,24 @@ class Player:
         self.life -= 1
         return self.life <= 0
 
+        
+
+    def decrease_bomb(self):
+        if self.bomb <= 0:
+            return
+        else:
+            self.bomb -= 1
+        
+
+    
+
+    def increase_bomb(self):
+        if self.bomb >= MAX_BOMB:
+            return True
+        self.bomb += 1
+        return False
+
+
     def fire(self):
         self.laser_time = 0
         bullet = LaserBullet(self.pos[0], self.pos[1] + Player.SPARK_OFFSET, 400)
@@ -84,11 +113,17 @@ class Player:
         # if self.laser_time < Player.SPARK_INTERVAL:
         #     self.spark.draw(self.x, self.y + Player.SPARK_OFFSET)
 
-        x,y = 0+30, get_canvas_height()-30
+        x_life,y_life = 0+30, get_canvas_height()-30
         for i in range(MAX_LIFE):
             heart = self.heart_red if i <self.life else self.heart_white
-            heart.draw(x, y)
-            x += heart.w
+            heart.draw(x_life, y_life)
+            x_life += heart.w
+
+        x_bomb,y_bomb = 0+30, get_canvas_height()-y_life
+        for i in range(MAX_BOMB):
+            bomb = self.image_bomb if i <self.bomb else self.image_bomb_clear
+            bomb.draw(x_bomb, y_bomb)
+            x_bomb += bomb.w    
 
     def update(self):
         x,y = self.pos  
@@ -137,13 +172,22 @@ class Player:
         if pair in Player.KEY_MAP_MOVE:
             #self.dx += Player.KEY_MAP[pair]
             self.delta = point_add(self.delta, Player.KEY_MAP_MOVE[pair])
-
-        pair_attack =(e.type, e.key)
-        if pair_attack in Player.KEY_MAP_ATTACK:
-            self.fireidx += Player.KEY_MAP_ATTACK[pair_attack]
-            #print(self.fireidx)
-        if self.fireidx > 0:
+        elif pair == Player.KEYDOWN_x:
             self.fire()
+        elif pair == Player.KEYDOWN_z:
+            #bomb = self.image_bomb if i <self.life else self.image_bomb_clear
+            self.decrease_bomb() 
+            print(self.bomb)
+        elif pair == Player.KEYDOWN_c:
+            self.increase_bomb() 
+
+
+        #elif pair_attack in Player.KEY_MAP_ATTACK:
+        #    self.fireidx += Player.KEY_MAP_ATTACK[pair_attack]
+        #    #print(self.fireidx)
+        #elif self.fireidx > 0:
+        #    self.fire()
+            
         
     def get_bb(self):
         hw = self.src_rect[2] / 2

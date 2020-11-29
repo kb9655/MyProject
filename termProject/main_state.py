@@ -13,6 +13,8 @@ import scoreboard
 canvas_width = 500
 canvas_height = 800
 
+STATE_IN_GAME, STATE_GAME_OVER = range(2)
+
 
 def enter():
     gfw.world.init(['bg', 'enemy', 'bullet', 'player', 'ui'])
@@ -71,6 +73,7 @@ def check_player(e):
         print('Player Collision', e)
         e.remove()
         player.decrease_life()
+        player.decrease_bomb()
         player.regen()
         return
 
@@ -85,7 +88,7 @@ def update():
 
 def draw():
     gfw.world.draw()
-    # gobj.draw_collision_box()
+    gobj.draw_collision_box()#colision
     
 def handle_event(e):
     global player
