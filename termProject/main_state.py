@@ -17,7 +17,7 @@ STATE_IN_GAME, STATE_GAME_OVER = range(2)
 
 
 def enter():
-    gfw.world.init(['bg', 'enemy', 'bullet', 'player', 'ui'])
+    gfw.world.init(['bg', 'enemy', 'bullet','player', 'ui', 'bullet_enemy'])
 
     center = get_canvas_width() // 2, get_canvas_height() // 2
 
@@ -50,8 +50,7 @@ def enter():
 
     global player_life
 
-    
-
+   
 def check_enemy(e):
     #if gobj.collides_box(player, e):
     #    print('Player Collision', e)
@@ -79,11 +78,14 @@ def check_player(e):
 
 
 def update():
+
     gfw.world.update()
     enemy_gen.update()
 
     for e in gfw.world.objects_at(gfw.layer.enemy):
         check_enemy(e)
+
+    for e in gfw.world.objects_at(gfw.layer.bullet_enemy):
         check_player(e)
 
 def draw():

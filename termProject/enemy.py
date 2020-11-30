@@ -2,6 +2,7 @@ from pico2d import *
 import gfw
 from gobj import *
 import life_gauge
+from bullet_enemy import *
 
 class Enemy:
     SIZE = 96
@@ -17,6 +18,10 @@ class Enemy:
         self.src_width = self.image.w // 8
         self.src_height = self.image.h
         self.time = 0
+
+        self.fire_time = 0
+
+        self.fire_interval = 1.0
     def draw(self):
         sx = self.fidx * self.src_width
         self.image.clip_draw(sx, 0, self.src_width, self.src_height, self.x, self.y)
@@ -33,6 +38,11 @@ class Enemy:
         if self.y < -Enemy.SIZE:
             self.remove()
 
+        self.fire_time += gfw.delta_time
+
+        if self.fire_time >= self.fire_interval:
+            self.fire()
+       
     def remove(self):
         gfw.world.remove(self)
 
@@ -42,6 +52,11 @@ class Enemy:
 
     def score(self):
         return self.max_life
+
+    def fire(self):
+        self.fire_time = 0
+        bullet_enemy = Bullet_enemy(self.x, self.y, 400)
+        gfw.world.add(gfw.layer.bullet_enemy, bullet_enemy)
 
     def get_bb(self):
         half = Enemy.SIZE // 2 - 5

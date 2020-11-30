@@ -77,6 +77,10 @@ class Player:
         self.roll_time = 0
         self.fireidx = 0
 
+        self.check_attack = 0
+        self.check_charge = 0
+        
+
     def regen(self):
         self.pos = self.pos_start
         
@@ -84,17 +88,12 @@ class Player:
         self.life -= 1
         return self.life <= 0
 
-        
-
     def decrease_bomb(self):
         if self.bomb <= 0:
             return
         else:
             self.bomb -= 1
         
-
-    
-
     def increase_bomb(self):
         if self.bomb >= MAX_BOMB:
             return True
@@ -107,6 +106,7 @@ class Player:
         bullet = LaserBullet(self.pos[0], self.pos[1] + Player.SPARK_OFFSET, 400)
         gfw.world.add(gfw.layer.bullet, bullet)
         # print('bullets = ', len(LaserBullet.bullets))
+
 
     def draw(self):
         self.image.clip_draw(*self.src_rect, self.pos[0], self.pos[1])
@@ -132,6 +132,9 @@ class Player:
         y += dy * self.speed * gfw.delta_time
         x = clamp(self.minx, x, self.maxx)
         self.pos= x,y
+
+        if self.check_attack == 1:
+            self.check_charge += gfw.delta_time
 
         #self.pos[0] += self.delta[0] * self.speed * gfw.delta_time
         #self.pos[1] += self.delta[1] * self.speed * gfw.delta_time
@@ -173,10 +176,20 @@ class Player:
             #self.dx += Player.KEY_MAP[pair]
             self.delta = point_add(self.delta, Player.KEY_MAP_MOVE[pair])
         elif pair == Player.KEYDOWN_x:
+            self.check_attack = 1
             self.fire()
+    
+        elif pair == Player.KEYUP_x:
+             self.check_attack = 0
+             print(self.check_charge)
+             if self.check_charge > 1:
+                 print("chargeshot")
+             self.check_charge=0
+                        
         elif pair == Player.KEYDOWN_z:
             #bomb = self.image_bomb if i <self.life else self.image_bomb_clear
-            self.decrease_bomb() 
+            self.decrease_bomb()
+            print("bomb")
             print(self.bomb)
         elif pair == Player.KEYDOWN_c:
             self.increase_bomb() 
