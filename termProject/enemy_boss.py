@@ -4,12 +4,14 @@ from gobj import *
 import life_gauge
 from bullet_enemy import *
 
+PI=3.14
+
 class Boss:
     SIZE = 96
     def __init__(self):
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.x, self.y = 250, get_canvas_height() - Boss.SIZE
-        self.dx, self.dy = 0, 1
+        self.dx, self.dy = 50, 0
         self.level = 100
         self.max_life = 1000
         self.life = self.max_life
@@ -18,6 +20,10 @@ class Boss:
         self.src_width = self.image.w #//8
         self.src_height = self.image.h
         self.time = 0
+
+        #self.half=image
+        self.minx = 0
+        self.maxx = get_canvas_width()
 
         self.fire_time = 0
 
@@ -31,8 +37,12 @@ class Boss:
 
     def update(self):
         self.time += gfw.delta_time
-        self.fidx = int(self.time * 10 + 0.5) % 8
-        # self.x += self.dx
+        self.fidx = int(self.time * 10 + 0.5) % 8        
+        if self.x > self.maxx:
+            self.dx *= -1
+        elif self.x < self.minx:
+            self.dx *= -1
+        self.x += self.dx * gfw.delta_time
         self.y += self.dy * gfw.delta_time
 
         #if self.y < -Boss.SIZE:
@@ -55,8 +65,15 @@ class Boss:
 
     def fire(self):
         self.fire_time = 0
-        bullet_enemy = Bullet_enemy(self.x, self.y, 400)
-        gfw.world.add(gfw.layer.bullet_enemy, bullet_enemy)
+        bullet_enemy1 = Bullet_enemy_2(self.x, self.y, 400, 5/6*PI*2)
+        gfw.world.add(gfw.layer.bullet_enemy, bullet_enemy1)
+        
+        bullet_enemy2 = Bullet_enemy_2(self.x, self.y, 400, 4/6*PI*2)
+        gfw.world.add(gfw.layer.bullet_enemy, bullet_enemy2)
+        
+        bullet_enemy2 = Bullet_enemy_2(self.x, self.y, 400, 4.5/6*PI*2)
+        gfw.world.add(gfw.layer.bullet_enemy, bullet_enemy2)
+        
 
     def get_bb(self):
         half = Boss.SIZE // 2 - 5

@@ -55,7 +55,7 @@ class Enemy:
 
     def fire(self):
         self.fire_time = 0
-        bullet_enemy = Bullet_enemy(self.x, self.y, 400)
+        bullet_enemy = Bullet_enemy_1(self.x, self.y, 400)
         gfw.world.add(gfw.layer.bullet_enemy, bullet_enemy)
 
     def get_bb(self):

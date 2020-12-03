@@ -8,7 +8,7 @@ class LaserBullet:
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.x, self.y = x, y
         self.dy = speed
-        self.image = gfw.image.load(RES_DIR + '/laser_1.png')
+        self.image = gfw.image.load(RES_DIR + '/bullet.png')
         self.image_charge_shot = gfw.image.load(RES_DIR + '/bullet.png')
         self.power = 100
         

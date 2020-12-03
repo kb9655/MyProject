@@ -3,6 +3,7 @@ from pico2d import *
 from player import Player
 from bullet import LaserBullet
 from score import Score
+import pause_state
 import gobj
 import enemy_gen
 import life_gauge
@@ -12,7 +13,7 @@ import scoreboard
 from enemy_boss import Boss
 
 canvas_width = 500
-canvas_height = 800
+canvas_height = 800  #720
 
 STATE_IN_GAME, STATE_GAME_OVER = range(2)
 
@@ -102,12 +103,18 @@ def handle_event(e):
         gfw.quit()
     elif e.type == SDL_KEYDOWN:
         if e.key == SDLK_ESCAPE:
-            return gfw.pop()
-        #if e.key == SDLK_SPACE:
+            gfw.push(pause_state)
+        #elif e.key == SDLK_SPACE:
         #     gfw.push(scoreboard)
     
 
     player.handle_event(e)
+
+def pause():
+    pass
+
+def resume():
+    pass
 
 def exit():
     pass
