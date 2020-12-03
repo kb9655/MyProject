@@ -4,10 +4,6 @@ import gfw
 from gobj import *
 from bullet import *
 
-MAX_LIFE = 3
-MAX_BOMB = 3
-MIN_BOMB = 0
-
 class Player:
     KEY_MAP_MOVE = {
         (SDL_KEYDOWN, SDLK_LEFT):  (-1,  0),
@@ -59,12 +55,7 @@ class Player:
         
         #이미지 로드
         self.image = gfw.image.load(RES_DIR + '/fighters.png')
-        self.spark = gfw.image.load(RES_DIR + '/laser_0.png')
-        self.heart_red = gfw.image.load('res/heart_red.png')
-        self.heart_white = gfw.image.load('res/heart_white.png')
-        self.explosion = gfw.image.load('res/explosion.jpg')
-        self.image_bomb = gfw.image.load('res/bomb.png')
-        self.image_bomb_clear = gfw.image.load('res/clear.png')
+  
  
         self.life = MAX_LIFE
         self.bomb = 2
@@ -203,8 +194,8 @@ class Player:
             
         
     def get_bb(self):
-        hw = self.src_rect[2] / 6
-        hh = self.src_rect[3] / 6
+        hw = self.src_rect[2] / 2
+        hh = self.src_rect[3] / 2
         return self.pos[0] - hw, self.pos[1] - hh, self.pos[0] + hw, self.pos[1] + hh
 
 if __name__ == "__main__":

@@ -9,6 +9,7 @@ import life_gauge
 from background import HorzScrollBackground
 from background import VertScrollBackground
 import scoreboard
+from enemy_boss import Boss
 
 canvas_width = 500
 canvas_height = 800
@@ -34,10 +35,13 @@ def enter():
 
     global player
     player = Player()
-    player.bg=bg
+    #player.bg=bg
     
     gfw.world.add(gfw.layer.player, player)
     
+    global boss
+    boss = Boss()
+    gfw.world.add(gfw.layer.enemy, boss)
 
     global score
     score = Score(canvas_width - 20, canvas_height - 50)
@@ -72,13 +76,12 @@ def check_player(e):
         print('Player Collision', e)
         e.remove()
         player.decrease_life()
-        player.decrease_bomb()
+        #player.decrease_bomb()
         player.regen()
         return
 
 
 def update():
-
     gfw.world.update()
     enemy_gen.update()
 
