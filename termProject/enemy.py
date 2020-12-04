@@ -18,10 +18,9 @@ class Enemy:
         self.src_width = self.image.w // 8
         self.src_height = self.image.h
         self.time = 0
-
         self.fire_time = 0
-
         self.fire_interval = 1.0
+        
     def draw(self):
         sx = self.fidx * self.src_width
         self.image.clip_draw(sx, 0, self.src_width, self.src_height, self.x, self.y)
@@ -53,10 +52,15 @@ class Enemy:
     def score(self):
         return self.max_life
 
+    def set_target(self, target):
+        self.target = target
+        
+
     def fire(self):
         self.fire_time = 0
-        bullet_enemy = Bullet_enemy_1(self.x, self.y, 400)
+        bullet_enemy = Bullet_enemy_3(self.x, self.y, 400, 0, 0)
         gfw.world.add(gfw.layer.bullet_enemy, bullet_enemy)
+
 
     def get_bb(self):
         half = Enemy.SIZE // 2 - 5

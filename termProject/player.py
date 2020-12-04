@@ -7,6 +7,8 @@ from bullet import *
 MAX_LIFE = 3
 MAX_BOMB = 3
 MIN_BOMB = 0
+MAX_POWERLEVEL = 2
+PI = 3.141592
 
 class Player:
     KEY_MAP_MOVE = {
@@ -39,7 +41,7 @@ class Player:
         (140, 0, 50, 80),
         (205, 0, 56, 80),
         (270, 0, 62, 80),
-        (334, 0, 70, 80),
+        (334, 0, 70, 80),#중앙
         (406, 0, 62, 80),
         (477, 0, 56, 80),
         (549, 0, 48, 80),
@@ -48,7 +50,6 @@ class Player:
     ]
     MAX_ROLL = 0.4
     SPARK_OFFSET = 28
-
     #constructor
     def __init__(self):
         #플레이어 이동
@@ -71,15 +72,23 @@ class Player:
 
         self.src_rect = Player.IMAGE_RECTS[5]
         half = self.src_rect[2] // 2
+        half_height = self.src_rect[3] // 2
+        
+
         self.minx = half
         self.maxx = get_canvas_width() - half
+        self.miny = half_height
+        self.maxy = get_canvas_height() - half_height
+        
+        
         self.laser_time = 0
         self.roll_time = 0
         self.fireidx = 0
 
         self.check_attack = 0
         self.check_charge = 0
-        
+
+        self.powerlevel = 2
 
     def regen(self):
         self.pos = self.pos_start
@@ -102,11 +111,34 @@ class Player:
 
 
     def fire(self):
+        pl=self.powerlevel
         self.laser_time = 0
-        bullet = LaserBullet(self.pos[0], self.pos[1] + Player.SPARK_OFFSET, 400)
-        gfw.world.add(gfw.layer.bullet, bullet)
-        # print('bullets = ', len(LaserBullet.bullets))
+        angle1 = 3.141592 * 70 / 360
+        
+        
+        if pl == 0:
+            bullet = LaserBullet(self.pos[0], self.pos[1] + Player.SPARK_OFFSET, 400)
+            gfw.world.add(gfw.layer.bullet, bullet)
+            # print('bullets = ', len(LaserBullet.bullets))
+        elif pl == 1:
+            bullet_1 = LaserBullet(self.pos[0] + 10, self.pos[1] + Player.SPARK_OFFSET, 400)
+            gfw.world.add(gfw.layer.bullet, bullet_1)
 
+            bullet_2 = LaserBullet(self.pos[0] -10, self.pos[1] + Player.SPARK_OFFSET, 400)
+            gfw.world.add(gfw.layer.bullet, bullet_2)
+            # print('bullets = ', len(LaserBullet.bullets))
+        elif pl == 2:
+            bullet_1 = LaserBullet(self.pos[0] + 10, self.pos[1] + Player.SPARK_OFFSET, 400)
+            gfw.world.add(gfw.layer.bullet, bullet_1)
+
+            bullet_2 = LaserBullet(self.pos[0] -10, self.pos[1] + Player.SPARK_OFFSET, 400)
+            gfw.world.add(gfw.layer.bullet, bullet_2)
+
+            bullet_3 = LaserBullet_Digonal(self.pos[0] + 15, self.pos[1] + Player.SPARK_OFFSET, 400, PI * 80/180)
+            gfw.world.add(gfw.layer.bullet, bullet_3)
+
+            bullet_4 = LaserBullet_Digonal(self.pos[0] -15, self.pos[1] + Player.SPARK_OFFSET, 400,PI * 100/180)
+            gfw.world.add(gfw.layer.bullet, bullet_4)
 
     def draw(self):
         self.image.clip_draw(*self.src_rect, self.pos[0], self.pos[1])
@@ -130,9 +162,12 @@ class Player:
         dx,dy = self.delta
         x += dx * self.speed * gfw.delta_time
         y += dy * self.speed * gfw.delta_time
+        
         x = clamp(self.minx, x, self.maxx)
+        y = clamp(self.miny, y, self.maxy)
+        
         self.pos= x,y
-
+        POS=self.pos
         if self.check_attack == 1:
             self.check_charge += gfw.delta_time
 
@@ -141,7 +176,7 @@ class Player:
 
         self.laser_time += gfw.delta_time        
         self.update_roll()
-
+        
         
         #if self.laser_time >= Player.LASER_INTERVAL:
         #    self.fire()     #발사
@@ -200,13 +235,18 @@ class Player:
         #    #print(self.fireidx)
         #elif self.fireidx > 0:
         #    self.fire()
-            
         
     def get_bb(self):
         hw = self.src_rect[2] / 6
         hh = self.src_rect[3] / 6
         return self.pos[0] - hw, self.pos[1] - hh, self.pos[0] + hw, self.pos[1] + hh
 
+    def out_pos(self):
+        player_pos=self.pos
+
+        return player_pos
+        
+    
 if __name__ == "__main__":
     for (l,t,r,b) in Player.IMAGE_RECTS:
         l *= 2
