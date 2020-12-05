@@ -73,36 +73,39 @@ class Bullet_enemy_2:
 
 class Bullet_enemy_3:
     SIZE = 40
-    def __init__(self, x, y, speed, target_x, target_y):
+    def __init__(self, x, y, speed):
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.x, self.y = x, y
         self.speed = speed
         self.image = gfw.image.load(RES_DIR +'/bullet_round.png')
         self.power = 100
         self.distance = 0
-        self.tx = target_x
-        self.ty = target_y
-        self.angle = 0
+        self.target = 0,0
         self.dx = 0
         self.dy = 0
+        self.angle = 0
+        self.set_target()
 
     def draw(self):
         self.image.draw(self.x, self.y)
     
     def update(self):
         self.distance = self.speed * gfw.delta_time
-        self.angle =  math.atan2(self.ty-self.y,self.tx-self.x)
         self.dx = self.distance * math.cos(self.angle) 
         self.dy = self.distance * math.sin(self.angle)
         self.x += self.dx
         self.y += self.dy
-       
-
         if self.y > get_canvas_height() + Bullet_enemy_2.SIZE:
             self.remove()
         if self.x > get_canvas_width() + Bullet_enemy_2.SIZE:
             self.remove()
 
+
+    def set_target(self):
+        for e in gfw.world.objects_at(gfw.layer.player):
+            self.target = e.pos
+            self.angle =  math.atan2(self.target[1]-self.y,self.target[0]-self.x)
+               
     def remove(self):
         gfw.world.remove(self)
 

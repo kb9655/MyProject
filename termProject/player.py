@@ -4,6 +4,7 @@ import gfw
 from gobj import *
 from bullet import *
 
+
 MAX_LIFE = 3
 MAX_BOMB = 3
 MIN_BOMB = 0
@@ -22,10 +23,14 @@ class Player:
         (SDL_KEYUP, SDLK_UP):      ( 0, -1),
     }
 
-    KEYDOWN_z  = (SDL_KEYDOWN, SDLK_z)
+    
     KEYDOWN_x = (SDL_KEYDOWN, SDLK_x)
     KEYUP_x   = (SDL_KEYUP,   SDLK_x)
+    KEYDOWN_z  = (SDL_KEYDOWN, SDLK_z)
     KEYDOWN_c  = (SDL_KEYDOWN, SDLK_c)
+
+    KEYDOWN_q  = (SDL_KEYDOWN, SDLK_q)
+    KEYDOWN_w  = (SDL_KEYDOWN, SDLK_w)
 
 
     #KEY_MAP_ATTACK = {
@@ -88,7 +93,7 @@ class Player:
         self.check_attack = 0
         self.check_charge = 0
 
-        self.powerlevel = 2
+        self.powerlevel = 0
 
     def regen(self):
         self.pos = self.pos_start
@@ -99,16 +104,41 @@ class Player:
 
     def decrease_bomb(self):
         if self.bomb <= 0:
-            return
+            return False
         else:
             self.bomb -= 1
+            return True
         
     def increase_bomb(self):
         if self.bomb >= MAX_BOMB:
+            return False
+        else:
+            self.bomb += 1
             return True
-        self.bomb += 1
-        return False
 
+    def reset_bomb(self):
+        pass
+
+    def fire_bomb(self):
+        for e in gfw.world.objects_at(gfw.layer.bullet_enemy):
+            e.remove()
+            
+    def decrease_power(self):
+        if self.powerlevel <= 0:
+            return
+        else:
+            self.powerlevel -= 1
+            
+    def increase_power(self):
+        if self.powerlevel >= MAX_POWERLEVEL:
+            return True
+        else:
+            self.powerlevel += 1
+            return False
+
+    def reset_powerlevel(self):
+        self.powerlevel = 0
+    
 
     def fire(self):
         pl=self.powerlevel
@@ -139,6 +169,10 @@ class Player:
 
             bullet_4 = LaserBullet_Digonal(self.pos[0] -15, self.pos[1] + Player.SPARK_OFFSET, 400,PI * 100/180)
             gfw.world.add(gfw.layer.bullet, bullet_4)
+
+    def chargeshot(self):
+        bullet = ChargeShot(self.pos[0], self.pos[1] + Player.SPARK_OFFSET, 400)
+        gfw.world.add(gfw.layer.bullet, bullet)
 
     def draw(self):
         self.image.clip_draw(*self.src_rect, self.pos[0], self.pos[1])
@@ -219,15 +253,22 @@ class Player:
              print(self.check_charge)
              if self.check_charge > 1:
                  print("chargeshot")
+                 self.chargeshot()
              self.check_charge=0
                         
         elif pair == Player.KEYDOWN_z:
-            #bomb = self.image_bomb if i <self.life else self.image_bomb_clear
-            self.decrease_bomb()
-            print("bomb")
-            print(self.bomb)
-        elif pair == Player.KEYDOWN_c:
-            self.increase_bomb() 
+            if self.decrease_bomb():
+                self.fire_bomb()
+
+        #elif pair == Player.KEYDOWN_c:
+        #    self.increase_bomb()
+
+
+        elif pair == Player.KEYDOWN_w:
+            self.increase_power()
+
+        elif pair == Player.KEYDOWN_q:
+            self.decrease_power()
 
 
         #elif pair_attack in Player.KEY_MAP_ATTACK:

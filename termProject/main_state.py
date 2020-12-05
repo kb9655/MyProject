@@ -11,6 +11,7 @@ from background import HorzScrollBackground
 from background import VertScrollBackground
 import scoreboard
 from enemy_boss import Boss
+from item import PowerUP
 
 canvas_width = 500
 canvas_height = 800  #720
@@ -19,7 +20,7 @@ STATE_IN_GAME, STATE_GAME_OVER = range(2)
 
 
 def enter():
-    gfw.world.init(['bg', 'enemy', 'bullet','player', 'ui', 'bullet_enemy'])
+    gfw.world.init(['bg', 'enemy', 'bullet','player', 'ui', 'bullet_enemy','item'])
 
     center = get_canvas_width() // 2, get_canvas_height() // 2
 
@@ -55,6 +56,11 @@ def enter():
 
     global player_life
 
+    global item
+
+    #item = PowerUP(250,400)
+    #gfw.world.add(gfw.layer.item, item)
+
    
 def check_enemy(e):
     #if gobj.collides_box(player, e):
@@ -69,6 +75,8 @@ def check_enemy(e):
             if dead:
                 score.score += e.level * 10
                 e.remove()
+                item = PowerUP(250,400)
+                gfw.world.add(gfw.layer.item, item)
             b.remove()
             return
 
@@ -77,9 +85,17 @@ def check_player(e):
         print('Player Collision', e)
         e.remove()
         player.decrease_life()
-        #player.decrease_bomb()
+        player.reset_powerlevel()
         player.regen()
         return
+
+def check_item(e):
+    if gobj.collides_box(player, e):
+        print('collide item')
+        e.remove()
+
+        if player.increase_power():
+            score.score += 100
 
 
 def update():
@@ -91,6 +107,9 @@ def update():
 
     for e in gfw.world.objects_at(gfw.layer.bullet_enemy):
         check_player(e)
+
+    for e in gfw.world.objects_at(gfw.layer.item):
+        check_item(e)
 
 def draw():
     gfw.world.draw()

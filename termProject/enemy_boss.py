@@ -12,7 +12,7 @@ class Boss:
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.x, self.y = 250, get_canvas_height() - Boss.SIZE
         self.dx, self.dy = 50, 0
-        self.level = 100
+        self.level = 10
         self.max_life = 1000
         self.life = self.max_life
         self.image = gfw.image.load(RES_DIR + '/boss.png')

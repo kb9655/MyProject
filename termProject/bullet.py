@@ -74,14 +74,14 @@ class LaserBullet_Digonal:
 
 
 
-class chargeshot:
+class ChargeShot:
     SIZE = 40
     def __init__(self, x, y, speed):
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.x, self.y = x, y
         self.dy = speed
-        self.image = gfw.image.load(RES_DIR + '/bullet.png')
-        self.power = 100
+        self.image = gfw.image.load(RES_DIR + '/chargeshot3.jpg')
+        self.power = 300
         
 
     def draw(self):
@@ -96,7 +96,7 @@ class chargeshot:
     def remove(self):
         gfw.world.remove(self)
 
-    
+
     def get_bb(self):
         hw = self.image.w // 2
         hh = self.image.h // 2

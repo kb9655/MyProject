@@ -3,6 +3,7 @@ import gfw
 from gobj import *
 import life_gauge
 from bullet_enemy import *
+from player import Player
 
 class Enemy:
     SIZE = 96
@@ -19,7 +20,7 @@ class Enemy:
         self.src_height = self.image.h
         self.time = 0
         self.fire_time = 0
-        self.fire_interval = 1.0
+        self.fire_interval = 2.0
         
     def draw(self):
         sx = self.fidx * self.src_width
@@ -58,7 +59,7 @@ class Enemy:
 
     def fire(self):
         self.fire_time = 0
-        bullet_enemy = Bullet_enemy_3(self.x, self.y, 400, 0, 0)
+        bullet_enemy = Bullet_enemy_3(self.x, self.y, 200)
         gfw.world.add(gfw.layer.bullet_enemy, bullet_enemy)
 
 
