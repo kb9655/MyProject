@@ -68,12 +68,13 @@ class Player:
         self.spark = gfw.image.load(RES_DIR + '/laser_0.png')
         self.heart_red = gfw.image.load('res/heart_red.png')
         self.heart_white = gfw.image.load('res/heart_white.png')
-        self.explosion = gfw.image.load('res/explosion.jpg')
-        self.image_bomb = gfw.image.load('res/bomb.png')
+        self.image_bomb = gfw.image.load('res/bombicon.png')
         self.image_bomb_clear = gfw.image.load('res/clear.png')
+        self.wav_playerfire = load_wav('res/playerfire.wav')
+        self.wav_bomb = load_wav('res/enemydead.wav')
  
         self.life = MAX_LIFE
-        self.bomb = 2
+        self.bomb = 3
 
         self.src_rect = Player.IMAGE_RECTS[5]
         half = self.src_rect[2] // 2
@@ -99,8 +100,11 @@ class Player:
         self.pos = self.pos_start
         
     def decrease_life(self):
-        self.life -= 1
-        return self.life <= 0
+        if self.life <= 0:
+            return False
+        else:
+            self.life -= 1
+            return True
 
     def decrease_bomb(self):
         if self.bomb <= 0:
@@ -122,6 +126,9 @@ class Player:
     def fire_bomb(self):
         for e in gfw.world.objects_at(gfw.layer.bullet_enemy):
             e.remove()
+        self.wav_bomb.play()
+        bomb = Bomb()
+        gfw.world.add(gfw.layer.bullet, bomb)
             
     def decrease_power(self):
         if self.powerlevel <= 0:
@@ -144,6 +151,7 @@ class Player:
         pl=self.powerlevel
         self.laser_time = 0
         angle1 = 3.141592 * 70 / 360
+        self.wav_playerfire.play()
         
         
         if pl == 0:
@@ -164,13 +172,14 @@ class Player:
             bullet_2 = LaserBullet(self.pos[0] -10, self.pos[1] + Player.SPARK_OFFSET, 400)
             gfw.world.add(gfw.layer.bullet, bullet_2)
 
-            bullet_3 = LaserBullet_Digonal(self.pos[0] + 15, self.pos[1] + Player.SPARK_OFFSET, 400, PI * 80/180)
+            bullet_3 = LaserBullet_Digonal(self.pos[0] + 15, self.pos[1] + Player.SPARK_OFFSET, 400, PI * 85/180)
             gfw.world.add(gfw.layer.bullet, bullet_3)
 
-            bullet_4 = LaserBullet_Digonal(self.pos[0] -15, self.pos[1] + Player.SPARK_OFFSET, 400,PI * 100/180)
+            bullet_4 = LaserBullet_Digonal(self.pos[0] -15, self.pos[1] + Player.SPARK_OFFSET, 400,PI * 95/180)
             gfw.world.add(gfw.layer.bullet, bullet_4)
 
     def chargeshot(self):
+        self.wav_playerfire.play()
         bullet = ChargeShot(self.pos[0], self.pos[1] + Player.SPARK_OFFSET, 400)
         gfw.world.add(gfw.layer.bullet, bullet)
 

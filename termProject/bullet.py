@@ -3,7 +3,7 @@ import gfw
 from gobj import *
 
 class LaserBullet:
-    SIZE = 40
+    SIZE = 20
     def __init__(self, x, y, speed):
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.x, self.y = x, y
@@ -75,13 +75,12 @@ class LaserBullet_Digonal:
 
 
 class ChargeShot:
-    SIZE = 40
     def __init__(self, x, y, speed):
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.x, self.y = x, y
         self.dy = speed
-        self.image = gfw.image.load(RES_DIR + '/chargeshot3.jpg')
-        self.power = 300
+        self.image = gfw.image.load(RES_DIR + '/chargeshot.png')
+        self.power = 1500
         
 
     def draw(self):
@@ -102,6 +101,24 @@ class ChargeShot:
         hh = self.image.h // 2
         return self.x - hw, self.y - hh, self.x + hw, self.y + hh
 
+class Bomb:
+    def __init__(self):
+        self.x, self.y = get_canvas_width()//2, get_canvas_height()//2
+        self.power = 2000
+
+    def draw(self):
+        pass
+
+    def update(self):
+        pass
+
+    def remove(self):
+        gfw.world.remove(self)
+
+    def get_bb(self):
+        hw = get_canvas_width()//2
+        hh = get_canvas_height()//2
+        return self.x - hw, self.y - hh, self.x + hw, self.y + hh
 
 
 
