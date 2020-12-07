@@ -280,12 +280,6 @@
 
 ​	1)현재까지의 진행 상황
 
-​		-게임 리소스 탐색(20%)
-
-​			-폭발 이미지
-
-​			-6종의 총알 이미지(적, 아군)
-
 ​		-스테이트 구조 구현(10%)
 
 ​			-title_state 추가
@@ -300,7 +294,7 @@
 
 ​			-플레이어 캐릭터 충돌 처리
 
-​			-구현 예정 : 폭탄, npc의 총알 발사, 플레이어 부활 시 무적
+​			-구현 예정 : 폭탄, npc의 총알 발사, 플레이어 부활 시 무적, 아이템 
 
 ​		-보조무기, 피격범위, 공격 단계,  npc의 피격범위(0%)
 
@@ -385,7 +379,100 @@
 
 ​				-무한 스크롤링과 시차스크롤링을 구현하기 위한 코드들 포함
 
-​			
+
+
+### 10.기말 발표
+
+1)주별 commit 수
+
+![](https://blogfiles.pstatic.net/MjAyMDExMjNfMTY3/MDAxNjA2MTM2MTE4NDc0.0fGUTwyrwFnHcLRP0dtG52-W0dqZlxWXSi-dglgVr-cg.3wOlLIvGwVv6cmw_H0hhhLk6-IWAkp-E9F3DCR8KRigg.PNG.kb9655/%EC%BA%A1%EC%B2%98.PNG)
+
+![](https://blogfiles.pstatic.net/MjAyMDEyMDdfMjI3/MDAxNjA3MzM1NjMxMDI4.OkOWHCTxkWVttBw7JVsGqjHxroPbO_Oh_29OWN0mEXog.GqHVwr28DJ9gVNBxW2MZYTxio7xuKydm-P0q83vdIG4g.PNG.kb9655/githubcommit.PNG)
+
+|                          | commit 수 |
+| ------------------------ | --------- |
+| 1주차(20.10.12~20.10.18) | 0         |
+| 2주차(20.10.19~20.10.25) | 0         |
+| 3주차(20.10.26~20.11.01) | 0         |
+| 4주차(20.11.02~20.11.08) | 0         |
+| 5주차(20.11.09~20.11.15) | 1         |
+| 6주차(20.11.16~20.11.22) | 2         |
+| 7주차(20.11.23~20.11.29) | 2         |
+| 8주차(20.11.30~20.12.06) | 6         |
+
+##### -구현 목록		
+
+​	-스테이트 구조 구현(40%)
+
+​			-로고 - X
+
+​			-타이틀 - O
+
+​			-메뉴 - X
+
+​			-캐릭터 선택 - O
+
+​			-게임 - O
+
+​			-컨티뉴 - X
+
+​			-점수판 구현 - X
+
+​		-캐릭터과 npc의 기능(90%)
+
+​			-플레이어 캐릭터 이동 - O
+
+​			-플레이어 캐릭터 공격 - O
+
+​			-플레이어 캐릭터 라이프 - O
+
+​			-플레이어 캐릭터 충돌 처리 - O
+
+​			-적npc의 크기에 따른 바운딩박스 - O
+
+​			-폭탄 - O
+
+​			-npc의 총알 발사 - O
+
+​			-플레이어 부활 시 무적 - X
+
+​			-아이템 획득 - O
+
+​		-보조무기, 공격 단계(50%)
+
+​			-플레이어 보조무기 - X
+
+​			-공격단계 - O
+
+​		-보스의  의사결정 구현, npc배치(30%)
+
+​			-보스 공격 - O
+
+​			-보스의 단계 - X
+
+​			- npc 배치 - O
+
+​		-점수판, 캐릭터 선택, 메뉴 구현(0%)
+
+​			-캐릭터 선택 시 현재 선택하고 있는것이 무엇인지 표시 - X
+
+​			-게임 재시작 - X
+
+
+
+##### -설치파일 생성
+
+​	-설치파일
+
+![](https://blogfiles.pstatic.net/MjAyMDEyMDdfMjQ5/MDAxNjA3MzM2Njk4MzM5.eO3cTeg-W4O_KPiFg-JT7RXkNG9BdAdwm1Ai-5zDPlgg.LL9DTYY45nxteey_8YaCNBg2IxVap5diDyjagjGszXIg.PNG.kb9655/%EC%84%A4%EC%B9%98_%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8.PNG)
+
+​	-설치파일 실행 결과
+
+​	![](https://blogfiles.pstatic.net/MjAyMDEyMDdfNjIg/MDAxNjA3MzM2NzAxOTI5.BJONb6p3XOsusudpozmALuPngX_DMjvPBGj1Hx2bZXwg.YyR18FAVNwaJo1jK_DWaqiCoVACpuanMe-lE_MiSDUYg.PNG.kb9655/%EC%84%A4%EC%B9%98%ED%8F%B4%EB%8D%94%EB%AA%A8%EC%8A%B5.PNG)		
+
+
+
+
 
 
 
