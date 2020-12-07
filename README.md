@@ -355,7 +355,7 @@
 
 ​				-키 입력을 받아 총알 발사
 
-​					-x를 누를때마다 총알 발사
+​					-x를 누를때마다 총알 발사, z키로 폭탄 발사, x키를 길게 눌러 차지샷
 
 ​				-플레이어의 life 정보(갯수와 이미지)와 그릴 위치 지정
 
@@ -470,7 +470,11 @@
 
 ​	![](https://blogfiles.pstatic.net/MjAyMDEyMDdfNjIg/MDAxNjA3MzM2NzAxOTI5.BJONb6p3XOsusudpozmALuPngX_DMjvPBGj1Hx2bZXwg.YyR18FAVNwaJo1jK_DWaqiCoVACpuanMe-lE_MiSDUYg.PNG.kb9655/%EC%84%A4%EC%B9%98%ED%8F%B4%EB%8D%94%EB%AA%A8%EC%8A%B5.PNG)		
 
+##### -조작방식
 
+​	상하좌우, 방향키로 이동
+
+​	x를 누를때마다 총알 발사, z키로 폭탄 발사, x키를 길게 눌러 차지샷
 
 
 
